@@ -13,11 +13,11 @@ export class CustomerComponent {
   isAddNew: boolean = false;
   firstName = new FormControl('', [
     Validators.required,
-    Validators.minLength(1),
+    Validators.minLength(2),
   ]);
   lastName = new FormControl('', [
     Validators.required,
-    Validators.minLength(1),
+    Validators.minLength(2),
   ]);
   displayedColumns: string[] = ['firstName', 'lastName'];
 
@@ -47,12 +47,12 @@ export class CustomerComponent {
 
   getFirstNameErrorMsg() {
     if (this.firstName.hasError('required')) return '내용을 입력해주세요.';
-    if (this.firstName.hasError('minlength')) return '2자 이상 입력해주세요';
+    if (this.firstName.hasError('minlength')) return '2자 이상 입력해주세요.';
     return '';
   }
   getLastNameErrorMsg() {
     if (this.lastName.hasError('required')) return '내용을 입력해주세요.';
-    if (this.lastName.hasError('minlength')) return '2자 이상 입력해주세요';
+    if (this.lastName.hasError('minlength')) return '2자 이상 입력해주세요.';
     return '';
   }
 }
