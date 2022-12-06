@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Customer } from './customer';
 
 @Component({
@@ -23,7 +24,7 @@ export class CustomerComponent {
 
   @ViewChild(MatTable) table: MatTable<Customer>;
 
-  constructor() {
+  constructor(private router: Router) {
     this.customers.push(new Customer('geony', 'han'));
     this.customers.push(new Customer('bora', 'lee'));
     this.customers.push(new Customer('solhee', 'han'));
@@ -54,5 +55,9 @@ export class CustomerComponent {
     if (this.lastName.hasError('required')) return '내용을 입력해주세요.';
     if (this.lastName.hasError('minlength')) return '2자 이상 입력해주세요.';
     return '';
+  }
+
+  logout() {
+    this.router.navigate(['login']);
   }
 }

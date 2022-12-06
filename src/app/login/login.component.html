@@ -6,17 +6,17 @@
     <mat-card-content>
       <div class="login-container">
         <mat-form-field appearance="outline">
-          <mat-label> Username </mat-label>
+          <mat-label> Email </mat-label>
           <input
             type="text"
             matInput
-            [formControl]="username"
+            [formControl]="email"
             required
             minLength="2"
           />
           <mat-icon matPrefix>edit</mat-icon>
-          <mat-error *ngIf="username.invalid">
-            {{ getUsernameErrorMsg() }}
+          <mat-error *ngIf="email.invalid">
+            {{ getEmailErrorMsg() }}
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -37,10 +37,14 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="username.invalid || password.invalid"
+        [disabled]="email.invalid || password.invalid"
+        (click)="login()"
       >
         Login
       </button>
+      <mat-error *ngIf="isAuthenticataionFailed">
+        이메일과 패스워드가 일치하지 않습니다.
+      </mat-error>
     </mat-card-content>
   </mat-card>
 </div>

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CreateUserInput } from '../../gql/generated-types';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'login',
@@ -7,26 +10,36 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['login.component.scss'],
 })
 export class LoginComponent {
-  username = new FormControl('', [
-    Validators.required,
-    Validators.minLength(2),
-  ]);
+  isAuthenticataionFailed: boolean = false;
+  email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
   ]);
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private readonly loginService: LoginService,
+  ) {}
 
-  getUsernameErrorMsg() {
-    if (this.username.hasError('required')) return '내용을 입력해주세요.';
-    if (this.username.hasError('minlength')) return '2자 이상 입력해주세요.';
+  getEmailErrorMsg() {
+    if (this.email.hasError('required')) return '내용을 입력해주세요.';
+    if (this.email.hasError('email')) return '이메일 형식 오류.';
     return '';
   }
-  getPasswordErrorMsg() {
+  getPasswordErrorMsg(): string {
     if (this.password.hasError('required')) return '내용을 입력해주세요.';
     if (this.password.hasError('minlength')) return '2자 이상 입력해주세요.';
-
     return '';
+  }
+  login() {
+    this.loginService
+      .login({ email: this.email.value!, password: this.password.value! })
+      .subscribe((response) => {
+        if (!response) {
+          this.isAuthenticataionFailed = true;
+        }
+        this.router.navigate(['/']);
+      });
   }
 }
