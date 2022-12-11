@@ -2,7 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { User } from '../../gql/generated-types';
+import { AuthService } from '../auth/auth.service';
 import { Customer } from './customer';
+import { CustomerService } from './customer.service';
 
 @Component({
   selector: 'customer',
@@ -21,13 +24,22 @@ export class CustomerComponent {
     Validators.minLength(2),
   ]);
   displayedColumns: string[] = ['firstName', 'lastName'];
+  user: User | undefined | null;
 
   @ViewChild(MatTable) table: MatTable<Customer>;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private readonly customerService: CustomerService,
+    private readonly authService: AuthService,
+  ) {
     this.customers.push(new Customer('geony', 'han'));
     this.customers.push(new Customer('bora', 'lee'));
     this.customers.push(new Customer('solhee', 'han'));
+  }
+
+  ngOnInit(): void {
+    this.me();
   }
 
   toggle() {
@@ -58,6 +70,12 @@ export class CustomerComponent {
   }
 
   logout() {
-    this.router.navigate(['login']);
+    this.authService.logout();
+  }
+
+  async me() {
+    this.authService.me().subscribe((result) => {
+      this.user = result.data.me;
+    });
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CreateUserInput } from '../../gql/generated-types';
+import { AuthService } from '../auth/auth.service';
 import { LoginService } from './login.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private readonly loginService: LoginService,
+    private readonly authService: AuthService,
   ) {}
 
   getEmailErrorMsg() {
@@ -33,7 +34,7 @@ export class LoginComponent {
     return '';
   }
   login() {
-    this.loginService
+    this.authService
       .login({ email: this.email.value!, password: this.password.value! })
       .subscribe((response) => {
         if (!response) {

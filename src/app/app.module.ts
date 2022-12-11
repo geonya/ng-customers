@@ -14,9 +14,10 @@ import { MatCardModule } from '@angular/material/card';
 import { LoginComponent } from './login/login.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache, type ApolloClientOptions } from '@apollo/client/core';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent, CustomerComponent, LoginComponent],
@@ -33,6 +34,8 @@ import { InMemoryCache, type ApolloClientOptions } from '@apollo/client/core';
     MatCardModule,
     MatToolbarModule,
     HttpClientModule,
+    AuthModule,
+    ApolloModule,
   ],
   providers: [
     {

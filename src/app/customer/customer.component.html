@@ -1,7 +1,7 @@
 <mat-toolbar>
   <h1>Customer</h1>
   <div class="flex-blank"></div>
-  <h3>Welcome, Geony</h3>
+  <h3>Welcome, {{ user?.email }}</h3>
   <button mat-raised-button color="primary" (click)="logout()">Logout</button>
 </mat-toolbar>
 <div class="container">

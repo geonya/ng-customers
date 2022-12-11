@@ -4,3 +4,13 @@ mutation createUser($input: CreateUserInput!) {
     error
   }
 }
+
+query me {
+  me {
+    id
+    email
+    password
+    createdAt
+    updatedAt
+  }
+}
