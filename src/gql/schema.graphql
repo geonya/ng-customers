@@ -14,3 +14,24 @@ query me {
     updatedAt
   }
 }
+
+mutation createCustomer($input: CreateCustomerInput!) {
+  createCustomer(input: $input) {
+    ok
+    error
+  }
+}
+
+query getCustomers {
+  getCustomers {
+    ok
+    error
+    customers {
+      id
+      firstName
+      lastName
+      createdAt
+      updatedAt
+    }
+  }
+}

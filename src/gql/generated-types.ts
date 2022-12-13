@@ -17,6 +17,17 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type CreateCustomerInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+};
+
+export type CreateCustomerOutput = {
+  __typename?: 'CreateCustomerOutput';
+  error?: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+};
+
 export type CreateUserInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -28,9 +39,31 @@ export type CreateUserOutput = {
   ok: Scalars['Boolean'];
 };
 
+export type Customer = {
+  __typename?: 'Customer';
+  createdAt: Scalars['DateTime'];
+  firstName: Scalars['String'];
+  id: Scalars['Int'];
+  lastName: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type GetCustomersOutput = {
+  __typename?: 'GetCustomersOutput';
+  customers: Array<Customer>;
+  error?: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createCustomer: CreateCustomerOutput;
   createUser: CreateUserOutput;
+};
+
+
+export type MutationCreateCustomerArgs = {
+  input: CreateCustomerInput;
 };
 
 
@@ -40,6 +73,7 @@ export type MutationCreateUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getCustomers: GetCustomersOutput;
   getUser: Scalars['Boolean'];
   me: User;
 };
@@ -64,6 +98,18 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: number, email: string, password: string, createdAt: any, updatedAt: any } };
+
+export type CreateCustomerMutationVariables = Exact<{
+  input: CreateCustomerInput;
+}>;
+
+
+export type CreateCustomerMutation = { __typename?: 'Mutation', createCustomer: { __typename?: 'CreateCustomerOutput', ok: boolean, error?: string | null } };
+
+export type GetCustomersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCustomersQuery = { __typename?: 'Query', getCustomers: { __typename?: 'GetCustomersOutput', ok: boolean, error?: string | null, customers: Array<{ __typename?: 'Customer', id: number, firstName: string, lastName: string, createdAt: any, updatedAt: any }> } };
 
 export const CreateUserDocument = gql`
     mutation createUser($input: CreateUserInput!) {
@@ -101,6 +147,51 @@ export const MeDocument = gql`
   })
   export class MeGQL extends Apollo.Query<MeQuery, MeQueryVariables> {
     document = MeDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateCustomerDocument = gql`
+    mutation createCustomer($input: CreateCustomerInput!) {
+  createCustomer(input: $input) {
+    ok
+    error
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateCustomerGQL extends Apollo.Mutation<CreateCustomerMutation, CreateCustomerMutationVariables> {
+    document = CreateCustomerDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetCustomersDocument = gql`
+    query getCustomers {
+  getCustomers {
+    ok
+    error
+    customers {
+      id
+      firstName
+      lastName
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetCustomersGQL extends Apollo.Query<GetCustomersQuery, GetCustomersQueryVariables> {
+    document = GetCustomersDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

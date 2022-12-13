@@ -4,18 +4,19 @@
       <mat-card-title>Login</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="login-container">
+      <form class="login-container" [formGroup]="loginForm">
         <mat-form-field appearance="outline">
           <mat-label> Email </mat-label>
           <input
             type="text"
             matInput
-            [formControl]="email"
+            autofocus
+            [formControl]="loginForm.controls.email"
             required
             minLength="2"
           />
           <mat-icon matPrefix>edit</mat-icon>
-          <mat-error *ngIf="email.invalid">
+          <mat-error *ngIf="loginForm.controls.email.invalid">
             {{ getEmailErrorMsg() }}
           </mat-error>
         </mat-form-field>
@@ -24,25 +25,30 @@
           <input
             type="password"
             matInput
-            [formControl]="password"
+            [formControl]="loginForm.controls.password"
             required
             minLength="2"
           />
           <mat-icon matPrefix>edit</mat-icon>
-          <mat-error *ngIf="password.invalid">
+          <mat-error *ngIf="loginForm.controls.password.invalid">
             {{ getPasswordErrorMsg() }}
           </mat-error>
         </mat-form-field>
-      </div>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="email.invalid || password.invalid"
-        (click)="login()"
-      >
-        Login
-      </button>
-      <mat-error *ngIf="isAuthenticataionFailed">
+        <button
+          class="submit-button"
+          mat-raised-button
+          color="primary"
+          [disabled]="
+            loginForm.controls.email.invalid ||
+            loginForm.controls.password.invalid
+          "
+          (click)="login()"
+        >
+          Login
+        </button>
+      </form>
+
+      <mat-error *ngIf="isAuthenticataionFailed$ | async">
         이메일과 패스워드가 일치하지 않습니다.
       </mat-error>
     </mat-card-content>
